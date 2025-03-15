@@ -5,6 +5,9 @@ import toast, { Toaster } from "react-hot-toast";
 import { IoIosPlay } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 
+// // Use environment variable for API base URL
+const API_BASE_URL =
+  import.meta.env.VITE_API_LIVE_PATH || "http://localhost:5000";
 // Main component for Text-to-Speech Converter
 const TTSConverter = () => {
   // State variables to store user input, audio source, loading state, history, etc.
@@ -29,7 +32,7 @@ const TTSConverter = () => {
 
     try {
       // Send POST request to backend TTS API
-      const response = await axios.post("http://localhost:5000/tts", { text });
+      const response = await axios.post(`${API_BASE_URL}/tts`, { text });
 
       // Check if the response contains a valid audio URL
       if (response.data && response.data.audioUrl) {
@@ -49,7 +52,7 @@ const TTSConverter = () => {
   // Function to fetch conversion history from backend
   const fetchHistory = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/history");
+      const response = await axios.get(`${API_BASE_URL}/history`);
       setHistory(response.data); // Update history state
       setShowHistory(true);
       toast.success("✅ History loaded!");
@@ -62,7 +65,7 @@ const TTSConverter = () => {
   // Function to delete a history item by ID
   const deleteHistoryItem = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/history/${id}`);
+      await axios.delete(`${API_BASE_URL}/history/${id}`);
       setHistory(history.filter((item) => item.id !== id)); // Remove deleted item from history
       toast.success("✅ History item deleted!");
     } catch (error) {
