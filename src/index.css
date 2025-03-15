@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@fontsource/poppins"; /* Defaults to 400 weight */
+@import "@fontsource/poppins/300.css"; /* Lighter */
+@import "@fontsource/poppins/700.css"; /* Bolder */

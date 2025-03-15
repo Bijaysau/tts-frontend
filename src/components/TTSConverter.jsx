@@ -5,12 +5,13 @@ import toast, { Toaster } from "react-hot-toast";
 import { IoIosPlay } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 
-// // Use environment variable for API base URL
+// Import Google Font
+import "@fontsource/poppins";
+
 const API_BASE_URL =
   import.meta.env.VITE_API_LIVE_PATH || "http://localhost:5000";
-// Main component for Text-to-Speech Converter
+
 const TTSConverter = () => {
-  // State variables to store user input, audio source, loading state, history, etc.
   const [text, setText] = useState("");
   const [audioSrc, setAudioSrc] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,25 +19,18 @@ const TTSConverter = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [audioDurations, setAudioDurations] = useState({});
 
-  // Function to handle text-to-speech conversion
   const handleConvert = async () => {
     if (!text.trim()) {
-      // Check if text input is empty
       toast.error("❌ Please enter text to convert!");
       return;
     }
-
-    tailChase.register(); // Initialize loading spinner
+    tailChase.register();
     setLoading(true);
     setAudioSrc("");
-
     try {
-      // Send POST request to backend TTS API
       const response = await axios.post(`${API_BASE_URL}/tts`, { text });
-
-      // Check if the response contains a valid audio URL
       if (response.data && response.data.audioUrl) {
-        setAudioSrc(response.data.audioUrl); // Set the audio source for playback
+        setAudioSrc(response.data.audioUrl);
         toast.success("✅ Audio generated successfully!");
       } else {
         throw new Error("Invalid response from server");
@@ -45,15 +39,14 @@ const TTSConverter = () => {
       console.error("Conversion error:", err);
       toast.error("❌ Failed to generate speech. Try again!");
     } finally {
-      setLoading(false); // Stop loading spinner
+      setLoading(false);
     }
   };
 
-  // Function to fetch conversion history from backend
   const fetchHistory = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/history`);
-      setHistory(response.data); // Update history state
+      setHistory(response.data);
       setShowHistory(true);
       toast.success("✅ History loaded!");
     } catch (error) {
@@ -62,11 +55,10 @@ const TTSConverter = () => {
     }
   };
 
-  // Function to delete a history item by ID
   const deleteHistoryItem = async (id) => {
     try {
       await axios.delete(`${API_BASE_URL}/history/${id}`);
-      setHistory(history.filter((item) => item.id !== id)); // Remove deleted item from history
+      setHistory(history.filter((item) => item.id !== id));
       toast.success("✅ History item deleted!");
     } catch (error) {
       console.error("Error deleting history item:", error);
@@ -74,21 +66,21 @@ const TTSConverter = () => {
     }
   };
 
-  // Function to get audio duration once metadata is loaded
   const handleLoadedMetadata = (event, id) => {
     const duration = event.target.duration;
     setAudioDurations((prev) => ({ ...prev, [id]: duration }));
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-[#1b1b22] p-8 text-white space-y-8">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-[#1b1b22] p-8 text-white space-y-8 font-[Poppins]">
       <Toaster position="top-right" reverseOrder={false} />
-
-      {/* Main container for TTS form */}
+      <p className="absolute top-2 left-2 text-sm text-gray-400">
+        Developed by Bijay Sau
+      </p>
       <div className="w-full max-w-3xl p-8 border-2 border-white/20 rounded-2xl backdrop-blur-lg bg-[#2a2a35]">
-        <h1 className="text-4xl font-bold mb-6">Text-to-Speech Converter</h1>
+        <h1 className="text-4xl font-bold mb-6">Text To Speech Converter</h1>
         <textarea
-          className="w-full p-4 border rounded-lg shadow-md focus:ring focus:ring-[#915eff] bg-[#1b1b22] hover:bg-[#282832]"
+          className="w-full p-4 border rounded-lg shadow-md focus:ring focus:ring-[#915eff] bg-[#1b1b22] hover:bg-[#282832] text-lg"
           rows="6"
           placeholder="Type your text here..."
           value={text}
@@ -114,8 +106,6 @@ const TTSConverter = () => {
           </button>
         </div>
       </div>
-
-      {/* Audio playback section */}
       {audioSrc && (
         <div className="w-full max-w-3xl p-4 mt-6 border-2 border-white/20 rounded-2xl bg-[#2a2a35]">
           <h2 className="text-xl font-bold mb-2">Playback</h2>
@@ -125,8 +115,6 @@ const TTSConverter = () => {
           </audio>
         </div>
       )}
-
-      {/* History display section */}
       {showHistory && (
         <div className="w-full max-w-3xl p-8 border-2 border-white/20 rounded-2xl backdrop-blur-lg bg-[#2a2a35]">
           <h2 className="text-2xl font-bold mb-4">Previous History</h2>
@@ -168,11 +156,3 @@ const TTSConverter = () => {
 };
 
 export default TTSConverter;
-
-// frontend, you used the following technologies:
-// React.js — For building the user interface.
-// Axios — To make HTTP requests to your backend (for TTS conversion and history fetching).
-// Tailwind CSS — For styling the components.
-// React Icons — For using icons like play, delete, etc.
-// LDRS — For adding a loading spinner (tailChase animation).
-// React Hot Toast — For showing notifications and alerts (success, error messages).
