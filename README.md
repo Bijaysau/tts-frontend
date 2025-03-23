@@ -1,12 +1,57 @@
-# React + Vite
+# 🎤 TTS Frontend - Text-to-Speech Web App 🎨🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the frontend of the **Text-to-Speech (TTS) Converter**! This React app provides a sleek UI for converting text to speech, playing audio, and viewing conversion history. 🎧✨
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✅ Convert text to speech instantly  
+✅ Play, pause, and manage generated audio 🎵  
+✅ View & delete past conversions from history  
+✅ Fully responsive & dark-themed UI 🌙
 
-## Expanding the ESLint configuration
+## 📞 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React.js** ⚛️
+- **Tailwind CSS** 🎨
+- **Axios** 🔗
+- **Vercel (Deployment)** 🚀
+- **React Icons — For using icons like play, delete, etc**
+- **React Hot Toast — For showing notifications and alerts (success, error messages).**
+- **LDRS — For adding a loading spinner (tailChase animation)**
+- **Vite (Build tool)**
+- **Poppins Font (Fontsource)**
+
+## 🔧 Setup Instructions
+
+1. **Clone the repo**
+   ```sh
+   git clone https://github.com/yourusername/tts-frontend.git
+   cd tts-frontend
+   ```
+2. **Install dependencies**
+   ```sh
+   npm install
+   ```
+3. **Setup environment variables**  
+   Create a `.env` file and add:
+   ```plaintext
+   VITE_API_LIVE_PATH=https://tts-backend-5jnm.onrender.com
+   ```
+4. **Run the app**
+   ```sh
+   npm run dev
+   ```
+   The app runs on **http://localhost:5173** 🌐
+
+## 📰 API Integration
+
+This frontend interacts with the backend at:  
+🔗 **Backend URL:** [https://tts-backend-5jnm.onrender.com](https://tts-backend-5jnm.onrender.com)
+
+## 🚀 Deployment
+
+- **Live App on Vercel:** 🌍 [Check it Out](https://tts-frontend-one.vercel.app/)
+
+---
+
+🎉 **Enjoy My TTS Converter!** 🔥🎧

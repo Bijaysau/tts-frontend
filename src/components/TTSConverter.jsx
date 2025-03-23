@@ -11,6 +11,51 @@ import "@fontsource/poppins";
 const API_BASE_URL =
   import.meta.env.VITE_API_LIVE_PATH || "http://localhost:5000";
 
+const voices = [
+  {
+    name: "Aarav (M)",
+    voiceId: "en-IN-aarav",
+    style: "Conversational",
+    image: "	https://murf.ai/public-assets/home/avatars/Aarav.jpg",
+  },
+  {
+    name: "Arohi (F)",
+    voiceId: "en-IN-arohi",
+    style: "Conversational",
+    image: "https://murf.ai/public-assets/home/avatars/Arohi.jpg",
+  },
+  {
+    name: "Rohan (M)",
+    voiceId: "en-IN-rohan",
+    style: "Conversational",
+    image: "https://murf.ai/public-assets/home/avatars/Rohan.jpg",
+  },
+  {
+    name: "Alia (F)",
+    voiceId: "en-IN-alia",
+    style: "Promo",
+    image: "https://murf.ai/public-assets/home/avatars/Alia.jpg",
+  },
+  {
+    name: "Surya (M)",
+    voiceId: "en-IN-surya",
+    style: "Documentary",
+    image: "https://murf.ai/public-assets/home/avatars/Surya.jpg",
+  },
+  {
+    name: "Priya (F)",
+    voiceId: "en-IN-priya",
+    style: "Conversational",
+    image: "https://murf.ai/public-assets/home/avatars/Priya.jpg",
+  },
+  {
+    name: "Shivani (F)",
+    voiceId: "en-IN-shivani",
+    style: "Conversational",
+    image: "https://murf.ai/public-assets/home/avatars/Shivani.jpg",
+  },
+];
+
 const TTSConverter = () => {
   const [text, setText] = useState("");
   const [audioSrc, setAudioSrc] = useState("");
@@ -18,6 +63,8 @@ const TTSConverter = () => {
   const [history, setHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   const [audioDurations, setAudioDurations] = useState({});
+  const [selectedVoice, setSelectedVoice] = useState(voices[0]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleConvert = async () => {
     if (!text.trim()) {
@@ -28,7 +75,11 @@ const TTSConverter = () => {
     setLoading(true);
     setAudioSrc("");
     try {
-      const response = await axios.post(`${API_BASE_URL}/tts`, { text });
+      const response = await axios.post(`${API_BASE_URL}/tts`, {
+        text,
+        voiceId: selectedVoice.voiceId,
+        style: selectedVoice.style,
+      });
       if (response.data && response.data.audioUrl) {
         setAudioSrc(response.data.audioUrl);
         toast.success("✅ Audio generated successfully!");
@@ -86,6 +137,66 @@ const TTSConverter = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
+        {/* Voice selection dropdown
+        <select
+          className="mt-4 w-full p-3 bg-[#3a3a45] text-white rounded-lg"
+          value={selectedVoice.voiceId}
+          onChange={(e) =>
+            setSelectedVoice(voices.find((v) => v.voiceId === e.target.value))
+          }
+        >
+          {voices.map((voice) => (
+            <option key={voice.voiceId} value={voice.voiceId}>
+              <img
+                src={voice.image}
+                alt={voice.name}
+                className="w-6 h-6 rounded-full inline-block mr-2"
+              />
+              {voice.name} - {voice.style}
+            </option>
+          ))}
+        </select> */}
+
+        {/* Custom Voice Selection Dropdown */}
+        <div className="relative w-full mt-4">
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="w-full flex items-center justify-between bg-[#3a3a45] text-white p-3 rounded-lg"
+          >
+            <div className="flex items-center">
+              <img
+                src={selectedVoice.image}
+                alt={selectedVoice.name}
+                className="w-8 h-8 rounded-full mr-2"
+              />
+              {selectedVoice.name} - {selectedVoice.style}
+            </div>
+            <span className="ml-2">▼</span>
+          </button>
+
+          {dropdownOpen && (
+            <div className="absolute w-full mt-1 bg-[#3a3a45] rounded-lg shadow-lg max-h-60 overflow-y-auto z-10">
+              {voices.map((voice) => (
+                <div
+                  key={voice.voiceId}
+                  onClick={() => {
+                    setSelectedVoice(voice);
+                    setDropdownOpen(false);
+                  }}
+                  className="flex items-center p-3 hover:bg-[#4b4b55] cursor-pointer"
+                >
+                  <img
+                    src={voice.image}
+                    alt={voice.name}
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                  {voice.name} - {voice.style}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="flex flex-wrap items-center justify-between mt-4 gap-4">
           <button
             onClick={handleConvert}
